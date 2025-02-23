@@ -24,10 +24,10 @@ def index():
 
 # Submit a champion
 
-@app.route('/selfie_submit.html/', methods=['GET', 'POST'])
-def selfie_submit():
+@app.route('/champion_submit.html/', methods=['GET', 'POST'])
+def champion_submit():
 
-    UPLOAD_FOLDER = 'uploads/photos/selfies'
+    UPLOAD_FOLDER = 'uploads/photos/champions'
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg','webp'}
     
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -55,9 +55,9 @@ def selfie_submit():
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('selfie_vote.html', name=filename))
+            return redirect(url_for('champion_vote.html', name=filename))
         
-    return render_template('selfie_submit.html')
+    return render_template('champion_submit.html')
 
 
 if __name__ == '__main__':
