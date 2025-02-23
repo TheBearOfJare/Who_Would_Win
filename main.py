@@ -14,10 +14,6 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 
 
 
-
-
-
-
 # The Home page
 
 @app.route('/', methods=['GET', 'POST'])
@@ -26,7 +22,7 @@ def index():
     return render_template('index.html')
 
 
-# Submit a selfie
+# Submit a champion
 
 @app.route('/selfie_submit.html/', methods=['GET', 'POST'])
 def selfie_submit():
