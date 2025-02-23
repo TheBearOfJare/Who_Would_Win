@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script src="{{ url_for('static', filename='js/selfie_submit.js') }}" fetchpriority="high" type="text/javascript"></script>
+
+    <head>
+
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Join the Competition!</title>
+    </head>
+    <body>
+        <form method="POST" action="" enctype=multipart/form-data name="selfie_submit">
+            <input type="file" id="webcamCapture" accept="image/*" capture="user" name="file">
+            <input type=submit value=Upload name="submit_button">
+        </form>
+        
+
+        <button onclick="capturePhoto()">Take Photo</button>
+
+        
+    </body>
+</html>
