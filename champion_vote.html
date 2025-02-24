@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<script src="{{ url_for('static', filename='js/champion_vote.js') }}" fetchpriority="high" type="text/javascript"></script>
+
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -7,6 +10,12 @@
     </head>
 
     <body>
+
+        <div id="voting_area" class="voting_area">
+            <div id="champion_one" class="champion_one" onclick="cast_vote(1)"></div>
+            <div id="champion_two" class="champion_two" onclick="cast_vote(2)"></div>
+
+        </div>
         
     </body>
 

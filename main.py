@@ -1,6 +1,6 @@
 from flask import *
 from werkzeug.utils import *
-import sqlite3
+import pandas
 import os
 
 
@@ -34,11 +34,7 @@ def champion_submit():
 
     if request.method == 'POST':
 
-        print(request.files) #request.files
-        for i in request.files:
-            print(i)
-            #i.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
+        print(request.form) #request.files
         
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -53,11 +49,34 @@ def champion_submit():
             print('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('champion_vote.html', name=filename))
+            #filename = secure_filename(file.filename)
+            champion_name = secure_filename(request.form.get("champion_name"))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], champion_name))
+            return redirect(url_for('champion_vote.html', name=champion_name))
         
     return render_template('champion_submit.html')
+
+
+
+
+# the champion vote page
+
+@app.route('/champion_vote.html/', methods=['GET', 'POST'])
+def champion_vote():
+
+    if request.method == 'POST':
+
+        print(request.form)
+
+
+
+    if request.method == 'GET':
+        print(request.args)
+
+    
+
+
+    return render_template('champion_vote.html')
 
 
 if __name__ == '__main__':
