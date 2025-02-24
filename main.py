@@ -180,11 +180,33 @@ def champion_vote():
 
 @app.route('/champion_leaderboard.html')
 def champion_leaderboard():
-    return render_template('champion_leaderboard.html')
+
+    # get every champion
+    db = pandas.read_csv('data/champion_data.csv')
+
+    # sort the dataframe by elo
+    db = db.sort_values(by=['elo'], ascending=False)
+
+    # replace the image src with base64 img data
+    for index, row in db.iterrows():
+        with open(row['image'], 'rb') as f:
+            imagebase64data = base64.b64encode(f.read()).decode('utf-8')
+            db.at[index, 'image'] = 'data:image/png;base64,' + imagebase64data
+
+
+    # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": imagebase64data}
+
+    # pass the dataframe to the html page as a table
+    leaderboard = db.to_html(index=False, escape=False)
+
+    print(leaderboard)
+
+    return render_template('champion_leaderboard.html', leaderboard=leaderboard)
 
 
 if __name__ == '__main__':
-    #app.run(debug=True)
+    app.run(debug=True)
 
-    serve(app, host='0.0.0.0', port=5000)
+    #serve(app, host='0.0.0.0', port=5000)
+
     
