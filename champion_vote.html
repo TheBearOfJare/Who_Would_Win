@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" fetchpriority="high"></script>
 <script src="{{ url_for('static', filename='js/champion_vote.js') }}" fetchpriority="high" type="text/javascript"></script>
 
 <html lang="en">
@@ -25,6 +26,13 @@
                 <img id="champion_2_img" class="champion_img" alt="Champion Two" src="{{ champion_2_data.image }}">
                 <p id="champion_2_data" class="champion_data">Joined the battle on {{ champion_2_data.date_added }}</p>
             </div>
+
+        </div>
+
+        <div class="menu">
+            <a href="{{ url_for('champion_submit') }}">Submit a champion</a>
+            <a href="{{ url_for('champion_leaderboard') }}">Leaderboard</a>
+            <a href="{{ url_for('index') }}">Home</a>
 
         </div>
         

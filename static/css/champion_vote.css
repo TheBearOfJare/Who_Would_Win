@@ -49,3 +49,13 @@
     font-size: 3svh;
     margin: 0.5svh;
 }
+.menu {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+    display: block;
+    margin: 0px;
+}

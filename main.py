@@ -4,6 +4,9 @@ import sys
 import pandas
 import os
 import base64
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 app = Flask(__name__, template_folder='.')
@@ -95,6 +98,8 @@ def champion_submit():
             # save the new data
             db.to_csv('data/champion_data.csv', index=False)
 
+            print("New champion: " + name)
+
             # send the user to the voting page
             return redirect(url_for('champion_vote'))
         
@@ -121,12 +126,33 @@ def champion_vote():
         except:
             db = pandas.DataFrame(columns=["name", "date_added", "elo", "wins", "losses", "kd", "image"])
 
-        # update the elo of the champions
+        # Update the stats of the champions
         winner = db.loc[db['name'] == request.form['winner']]
         loser = db.loc[db['name'] == request.form['loser']]
-
+        
+        # Update the elo
         winner_elo = winner.iloc[0]['elo']
         loser_elo = loser.iloc[0]['elo']
+        
+        winner_elo, loser_elo = calculate_elo(winner_elo, loser_elo, 1)
+        
+        # Update the winner and loser DataFrames
+        winner_index = winner.index[0]
+        loser_index = loser.index[0]
+        
+        db.at[winner_index, 'elo'] = winner_elo
+        db.at[winner_index, 'wins'] += 1
+        db.at[winner_index, 'kd'] = (db.at[winner_index, 'wins'] / db.at[winner_index, 'losses'])
+        
+        db.at[loser_index, 'elo'] = loser_elo
+        db.at[loser_index, 'losses'] += 1
+        db.at[loser_index, 'kd'] = (db.at[loser_index, 'wins'] / db.at[loser_index, 'losses'])
+        
+        # Save the changes to the CSV file
+        db.to_csv('data/champion_data.csv', index=False)
+
+        # refresh the page to allow the user to vote on a new matchup
+        return redirect(url_for('champion_vote'))
         
 
     # get two random champions from the csv database using pandas
@@ -150,6 +176,10 @@ def champion_vote():
 
     return render_template('champion_vote.html', champion_1_data=champion_1_data, champion_2_data=champion_2_data)
 
+
+@app.route('/champion_leaderboard.html')
+def champion_leaderboard():
+    return render_template('champion_leaderboard.html')
 
 
 if __name__ == '__main__':
