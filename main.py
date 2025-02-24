@@ -5,6 +5,7 @@ import pandas
 import os
 import base64
 import warnings
+from waitress import *
 
 warnings.filterwarnings("ignore")
 
@@ -183,5 +184,7 @@ def champion_leaderboard():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+
+    serve(app, host='0.0.0.0', port=5000)
     
