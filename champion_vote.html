@@ -6,14 +6,25 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Battles Of BC - Champion Vote</title>
+        <title>Who Would Win - Champion Vote</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/champion_vote.css') }}">
     </head>
 
     <body>
 
         <div id="voting_area" class="voting_area">
-            <div id="champion_one" class="champion_one" onclick="cast_vote(1)"></div>
-            <div id="champion_two" class="champion_two" onclick="cast_vote(2)"></div>
+            <div id="champion_1" class="champion_1" onclick="cast_vote(1)">
+                <p id="champion_1_name" class="champion_name">{{ champion_1_data.name }}</p>
+                <img id="champion_1_img" class="champion_img" alt="Champion One" src="{{ champion_1_data.image }}">
+                <p id="champion_1_data" class="champion_data">Joined the battle on {{ champion_1_data.date_added }}</p>
+                
+            </div>
+            <div id="vs" class="vs">VS</div>
+            <div id="champion_2" class="champion_2" onclick="cast_vote(2)">
+                <p id="champion_2_name" class="champion_name">{{ champion_2_data.name }}</p>
+                <img id="champion_2_img" class="champion_img" alt="Champion Two" src="{{ champion_2_data.image }}">
+                <p id="champion_2_data" class="champion_data">Joined the battle on {{ champion_2_data.date_added }}</p>
+            </div>
 
         </div>
         

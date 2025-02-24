@@ -1,23 +1,14 @@
 function cast_vote(vote) {
 
-    // create the form and submit the vote. Redirect back to the vote page to allow the user to vote again on a new matchup.
+    name_of_winner = document.getElementById("champion_" + vote + "_name").innerHTML
 
-    var vote_form = document.createElement("form");
+    if (vote == 1) {
+        name_of_loser = document.getElementById("champion_2_name").innerHTML
+    } else {
+        name_of_loser = document.getElementById("champion_1_name").innerHTML
+    }
 
-    vote_form.method = "POST";
-    vote_form.action = "/champion_vote.html";
-    vote_form.id = "vote";
-
-    var vote_input = document.createElement("input");
-
-    vote_input.type = "hidden";
-    vote_input.display = "none";
-    vote_input.name = "vote";
-    vote_input.value = vote;
-
-    vote_form.appendChild(vote_input);
-
-    vote_form.submit();
-
+    // send the ajax request
+    $.post("/champion_vote", {winner: name_of_winner, loser: name_of_loser});
 
 }

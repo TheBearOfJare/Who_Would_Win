@@ -17,13 +17,9 @@
         <h1>Submit a Champion!</h1>
         <h2>(this can be literally anything or anyone)</h2>
 
-        
-
-        <form method="POST" action="" name="name_your_champion">
-            <input type="text" name="champion_name" placeholder="Champion Name" id="champion_name" oninput="enable_file_upload()">
-        </form>
 
         <form method="POST" action="" enctype=multipart/form-data name="champion_submit">
+            <input type="text" name="champion_name" placeholder="Champion Name" id="champion_name" oninput="enable_file_upload()">
             <input type="file" accept="image/*" name="file" id = "file_select" onchange="enable_submit_button()" disabled>
             <input type=submit value=Upload name="submit_button" id = "submit" disabled>
         </form>
