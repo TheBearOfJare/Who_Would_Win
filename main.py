@@ -6,6 +6,16 @@ import os
 import base64
 import warnings
 from waitress import *
+from markupsafe import Markup
+import google.genai as genai
+import google.genai.types as types
+
+
+with open('var.txt', 'r') as f:
+    key = f.read()
+
+client = genai.Client(api_key=key)
+
 
 warnings.filterwarnings("ignore")
 
@@ -73,11 +83,8 @@ def champion_submit():
             print('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
-            #filename = secure_filename(file.filename)
 
-            # save the champion image
-            sanitized_file_name = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], sanitized_file_name))
+            # before all else, check if the champion already exists with gemini
 
             # get the database
             try:
@@ -86,8 +93,28 @@ def champion_submit():
                 
                 db = pandas.DataFrame(columns=["name", "date_added", "elo", "wins", "losses", "kd", "image"])
 
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents="Is " + request.form.get("champion_name").replace(",", "") + " functionally the same as one of the following: " + ", ".join(db['name'].tolist()) + "? Yes or No",
+                config=types.GenerateContentConfig(
+                    max_output_tokens=60)
+                
+            )
+
+            text = response.candidates[0].content.parts[0].text
+
+            if "yes" in text.lower():
+                return redirect(url_for('champion_submission_invalid'))
+
+            #filename = secure_filename(file.filename)
+
+            # save the champion image
+            sanitized_file_name = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], sanitized_file_name))
+
+           
             # add the new data
-            name = request.form.get("champion_name")
+            name = request.form.get("champion_name").replace(",", "")
             date_added = datetime.now().strftime("%m/%d/%Y")
             elo = 1000
             wins = 0
@@ -107,6 +134,11 @@ def champion_submit():
     return render_template('champion_submit.html')
 
 
+# the invalid submission page
+
+@app.route('/champion_submission_invalid.html/')
+def champion_submission_invalid():
+    return render_template('champion_submission_invalid.html')
 
 
 # the champion vote page
@@ -187,11 +219,11 @@ def champion_leaderboard():
     # sort the dataframe by elo
     db = db.sort_values(by=['elo'], ascending=False)
 
-    # replace the image src with base64 img data
+    # replace the image src with base64 img date inside of an <img> element
     for index, row in db.iterrows():
         with open(row['image'], 'rb') as f:
             imagebase64data = base64.b64encode(f.read()).decode('utf-8')
-            db.at[index, 'image'] = 'data:image/png;base64,' + imagebase64data
+            db.at[index, 'image'] = '<img class="champion_img" src="data:image/png;base64,' + imagebase64data + '">'
 
 
     # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": imagebase64data}
@@ -199,9 +231,9 @@ def champion_leaderboard():
     # pass the dataframe to the html page as a table
     leaderboard = db.to_html(index=False, escape=False)
 
-    print(leaderboard)
+    #print(leaderboard)
 
-    return render_template('champion_leaderboard.html', leaderboard=leaderboard)
+    return render_template('champion_leaderboard.html', leaderboard=Markup(leaderboard))
 
 
 if __name__ == '__main__':
