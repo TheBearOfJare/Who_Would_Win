@@ -8,7 +8,7 @@
     </head>
     <body>
         
-        <a href="{{ url_for('index') }}">Home</a> <a href="{{ url_for('champion_submit') }}">Submit a champion</a> <a href="{{ url_for('champion_vote') }}">Decide who would win</a>
+        <a href="{{ url_for('index') }}">Home</a> | <a href="{{ url_for('champion_submit') }}">Submit a champion</a> | <a href="{{ url_for('champion_vote') }}">Decide who would win</a>
         <h1>Leaderboard</h1>
 
         <p>The leaderboard ranking order is dictated by Elo. Champions with a higher elo are better than those with a lower elo.When one champion beats another champion, elo is taken from the loser and given to the winner, relative to each of their elo's according to a formula called the Elo Algorithm, most famously used for chess rankings. Winning against a stronger opponent will give the winner more elo, while winning against a weaker opponent will give the winner less elo. To read more about the Elo Ranking System, veiw <a href="https://en.wikipedia.org/wiki/Elo_rating_system">this Wikipedia article about it.</a>.</p>
