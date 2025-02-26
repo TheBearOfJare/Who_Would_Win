@@ -1,0 +1,8 @@
+.champion_img {
+    max-height: 60svh;
+    margin: auto;
+}
+.champion_header {
+    text-align: center;
+    font-size: 20vh;
+}

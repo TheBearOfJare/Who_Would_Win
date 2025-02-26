@@ -53,7 +53,7 @@ def calculate_elo(elo1, elo2, winner):
 @app.route('/', methods=['GET', 'POST'])
 def index():
         
-    return render_template('index.html')
+    return render_template('static/html/index.html')
 
 
 # Submit a champion
@@ -132,7 +132,7 @@ def champion_submit():
             # send the user to the voting page
             return redirect(url_for('champion_vote'))
         
-    return render_template('champion_submit.html')
+    return render_template('static/html/champion_submit.html')
 
 
 # the invalid submission page
@@ -208,7 +208,7 @@ def champion_vote():
 
     # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": imagebase64data}
 
-    return render_template('champion_vote.html', champion_1_data=champion_1_data, champion_2_data=champion_2_data)
+    return render_template('static/html/champion_vote.html', champion_1_data=champion_1_data, champion_2_data=champion_2_data)
 
 
 @app.route('/champion_leaderboard.html')
@@ -234,7 +234,7 @@ def champion_leaderboard():
 
     #print(leaderboard)
 
-    return render_template('champion_leaderboard.html', leaderboard=Markup(leaderboard))
+    return render_template('static/html/champion_leaderboard.html', leaderboard=Markup(leaderboard))
 
 
 if __name__ == '__main__':
