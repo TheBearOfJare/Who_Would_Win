@@ -93,21 +93,23 @@ def champion_submit():
                 
                 db = pandas.DataFrame(columns=["name", "date_added", "elo", "wins", "losses", "kd", "image"])
 
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents="Is " + request.form.get("champion_name").replace(",", "") + " similar enough to one of the following: " + ", ".join(db['name'].tolist()) + " that there would be no need to have both? Yes or No",
-                config=types.GenerateContentConfig(
-                    max_output_tokens=60)
+            # response = client.models.generate_content(
+            #     model="gemini-2.0-flash",
+            #     contents="Is " + request.form.get("champion_name").replace(",", "") + " similar enough to one of the following: " + ", ".join(db['name'].tolist()) + " that there would be no need to have both? Yes or No",
+            #     config=types.GenerateContentConfig(
+            #         max_output_tokens=60)
                 
-            )
+            # )
 
-            text = response.candidates[0].content.parts[0].text
+            # text = response.candidates[0].content.parts[0].text
 
-            if "yes" in text.lower():
+            # if "yes" in text.lower():
+            #     print("Rejected: " + request.form.get("champion_name").replace(",", ""))
+            #     return redirect(url_for('champion_submission_invalid'))
+
+            if (db['name'] == request.form.get("champion_name").replace(",", "")).any().any():
                 print("Rejected: " + request.form.get("champion_name").replace(",", ""))
                 return redirect(url_for('champion_submission_invalid'))
-
-            #filename = secure_filename(file.filename)
 
             # save the champion image
             sanitized_file_name = secure_filename(file.filename)
@@ -139,7 +141,7 @@ def champion_submit():
 
 @app.route('/champion_submission_invalid.html/')
 def champion_submission_invalid():
-    return render_template('champion_submission_invalid.html')
+    return render_template('/static/html/champion_submission_invalid.html')
 
 
 # the champion vote page

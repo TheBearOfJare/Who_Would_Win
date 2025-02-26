@@ -18,12 +18,12 @@
         <h2>(this can be literally anything or anyone)</h2>
 
         <form method="POST" action="" enctype=multipart/form-data name="champion_submit">
-            <input type="text" name="champion_name" placeholder="Champion Name" id="champion_name"><br><br>
+            <input type="text" name="champion_name" placeholder="Champion Name" id="champion_name" maxlength="70" required><br><br>
             
             <label for="file_select" class="file_upload" id="custom_file_upload">
                 Upload a Photo
             </label>
-            <input type="file" accept="image/*" name="file" id = "file_select" onchange="enable_submit_button();" style="display: none;"><span id="file_status">No File Selected</span><br>
+            <input type="file" accept="image/*" name="file" id = "file_select" required onchange="enable_submit_button();" style="display: none;"><span id="file_status" >No File Selected</span><br>
             Take a photo instead (Y/N)?<input type="checkbox" id="take_photo" onchange="toggle_take_photo()">
             <br><br>
             <input type=submit value=Upload name="submit_button" id = "submit" disabled>
