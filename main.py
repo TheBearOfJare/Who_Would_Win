@@ -95,7 +95,7 @@ def champion_submit():
 
             response = client.models.generate_content(
                 model="gemini-2.0-flash",
-                contents="Is " + request.form.get("champion_name").replace(",", "") + " functionally the same as one of the following: " + ", ".join(db['name'].tolist()) + "? Yes or No",
+                contents="Is " + request.form.get("champion_name").replace(",", "") + " similar enough to one of the following: " + ", ".join(db['name'].tolist()) + " that there would be no need to have both? Yes or No",
                 config=types.GenerateContentConfig(
                     max_output_tokens=60)
                 
@@ -104,6 +104,7 @@ def champion_submit():
             text = response.candidates[0].content.parts[0].text
 
             if "yes" in text.lower():
+                print("Rejected: " + request.form.get("champion_name").replace(",", ""))
                 return redirect(url_for('champion_submission_invalid'))
 
             #filename = secure_filename(file.filename)
