@@ -53,7 +53,7 @@ def calculate_elo(elo1, elo2, winner):
 @app.route('/', methods=['GET', 'POST'])
 def index():
         
-    return render_template('static/html/index.html')
+    return render_template('index.html')
 
 
 # Submit a champion
