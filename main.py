@@ -213,8 +213,28 @@ def champion_vote():
     return render_template('static/html/champion_vote.html', champion_1_data=champion_1_data, champion_2_data=champion_2_data)
 
 
+
+# the image getter
+@app.route('/get_image', methods=['GET'])
+def get_image():
+    # handle the requests for the image data after the table loads. The request is the src of the desired image, and the response is the image data as base64
+    if request.method == 'GET':
+
+        src = request.args.get('src')
+
+        # print("Requested received: " + f"{request.args}")
+        # print(request)
+        # print(src)
+
+        with open(src, 'rb') as f:
+            imagebase64data = base64.b64encode(f.read()).decode('utf-8')
+
+        return imagebase64data
+        # return the image data for the requested image
+
 @app.route('/champion_leaderboard.html')
 def champion_leaderboard():
+
 
     # get every champion
     db = pandas.read_csv('data/champion_data.csv')
@@ -222,14 +242,12 @@ def champion_leaderboard():
     # sort the dataframe by elo
     db = db.sort_values(by=['elo'], ascending=False)
 
-    # replace the image src with base64 img date inside of an <img> element
+    # replace the image src an img element. Don't inlcude image data yet, we'll add that after the page loads to improve performance. We'll set the id to the image path, so we can use it later.
     for index, row in db.iterrows():
-        with open(row['image'], 'rb') as f:
-            imagebase64data = base64.b64encode(f.read()).decode('utf-8')
-            db.at[index, 'image'] = '<img class="champion_img" src="data:image/png;base64,' + imagebase64data + '">'
+        src = row['image']
+        db.at[index, 'image'] = '<img class="champion_img" id="' + src + '" src="">'
 
-
-    # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": imagebase64data}
+    # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": (missing image data)}
 
     # pass the dataframe to the html page as a table
     leaderboard = db.to_html(index=False, escape=False)
