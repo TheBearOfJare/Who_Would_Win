@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" fetchpriority="high"></script>
+    <script src="{{ url_for('static', filename='js/champion_leaderboard.js') }}" fetchpriority="high" type="text/javascript"></script>
+    
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +16,21 @@
         <h1>Leaderboard</h1>
 
         <p>The leaderboard ranking order is dictated by Elo. Champions with a higher elo are better than those with a lower elo.When one champion beats another champion, elo is taken from the loser and given to the winner, relative to each of their elo's according to a formula called the Elo Algorithm, most famously used for chess rankings. Winning against a stronger opponent will give the winner more elo, while winning against a weaker opponent will give the winner less elo. To read more about the Elo Ranking System, veiw <a href="https://en.wikipedia.org/wiki/Elo_rating_system">this Wikipedia article about it.</a>.</p>
+
+        <div class="leaderboard">
+            {{ leaderboard }}
+
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                get_images();
+                console.log('document ready, get_images called');
+            });
+        </script>
+
     </body>
 
-    {{ leaderboard }}
+    
 
 </html>
