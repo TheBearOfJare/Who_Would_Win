@@ -9,6 +9,7 @@ from waitress import *
 from markupsafe import Markup
 import google.genai as genai
 import google.genai.types as types
+import html
 
 
 with open('var.txt', 'r') as f:
@@ -117,7 +118,7 @@ def champion_submit():
 
            
             # add the new data
-            name = request.form.get("champion_name").replace(",", "")
+            name = html.escape(request.form.get("champion_name").replace(",", ""))
             date_added = datetime.now().strftime("%m/%d/%Y")
             elo = 1000
             wins = 0
