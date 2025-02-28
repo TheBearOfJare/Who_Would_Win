@@ -108,9 +108,9 @@ def champion_submit():
             #     print("Rejected: " + request.form.get("champion_name").replace(",", ""))
             #     return redirect(url_for('champion_submission_invalid'))
 
-            if (db['name'] == request.form.get("champion_name").replace(",", "")).any().any():
-                print("Rejected: " + request.form.get("champion_name").replace(",", ""))
-                return redirect(url_for('champion_submission_invalid'))
+            # if (db['name'] == request.form.get("champion_name").replace(",", "")).any().any():
+                # print("Rejected: " + request.form.get("champion_name").replace(",", ""))
+                # return redirect(url_for('champion_submission_invalid'))
 
             # save the champion image
             sanitized_file_name = secure_filename(file.filename)
