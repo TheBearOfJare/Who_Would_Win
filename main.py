@@ -9,6 +9,7 @@ from waitress import *
 from markupsafe import Markup
 import google.genai as genai
 import google.genai.types as types
+import html
 
 
 with open('var.txt', 'r') as f:
@@ -107,9 +108,9 @@ def champion_submit():
             #     print("Rejected: " + request.form.get("champion_name").replace(",", ""))
             #     return redirect(url_for('champion_submission_invalid'))
 
-            if (db['name'] == request.form.get("champion_name").replace(",", "")).any().any():
-                print("Rejected: " + request.form.get("champion_name").replace(",", ""))
-                return redirect(url_for('champion_submission_invalid'))
+            # if (db['name'] == request.form.get("champion_name").replace(",", "")).any().any():
+                # print("Rejected: " + request.form.get("champion_name").replace(",", ""))
+                # return redirect(url_for('champion_submission_invalid'))
 
             # save the champion image
             sanitized_file_name = secure_filename(file.filename)
@@ -117,7 +118,7 @@ def champion_submit():
 
            
             # add the new data
-            name = request.form.get("champion_name").replace(",", "")
+            name = html.escape(request.form.get("champion_name").replace(",", ""))
             date_added = datetime.now().strftime("%m/%d/%Y")
             elo = 1000
             wins = 0
