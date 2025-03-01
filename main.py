@@ -56,6 +56,11 @@ def index():
         
     return redirect(url_for('champion_vote'))
 
+# the about page
+@app.route('/about.html')
+def about():
+    return render_template('static/html/about.html')
+
 
 # Submit a champion
 
