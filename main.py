@@ -49,12 +49,12 @@ def calculate_elo(elo1, elo2, winner):
 
 
 
-# The Home page
+# The Default page
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
         
-    return render_template('index.html')
+    return redirect(url_for('champion_vote'))
 
 
 # Submit a champion
