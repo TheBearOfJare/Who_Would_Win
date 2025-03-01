@@ -94,6 +94,7 @@ def champion_submit():
                 
                 db = pandas.DataFrame(columns=["name", "date_added", "elo", "wins", "losses", "kd", "image"])
 
+            """
             # response = client.models.generate_content(
             #     model="gemini-2.0-flash",
             #     contents="Is " + request.form.get("champion_name").replace(",", "") + " similar enough to one of the following: " + ", ".join(db['name'].tolist()) + " that there would be no need to have both? Yes or No",
@@ -111,6 +112,8 @@ def champion_submit():
             # if (db['name'] == request.form.get("champion_name").replace(",", "")).any().any():
                 # print("Rejected: " + request.form.get("champion_name").replace(",", ""))
                 # return redirect(url_for('champion_submission_invalid'))
+
+                """
 
             # save the champion image
             sanitized_file_name = secure_filename(file.filename)

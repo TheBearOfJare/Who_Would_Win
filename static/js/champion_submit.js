@@ -7,7 +7,7 @@ function toggle_take_photo() {
         
 
     } else {
-        document.getElementById("file_select").capture = null;
+        document.getElementById("file_select").removeAttribute("capture");
         document.getElementById("custom_file_upload").innerHTML = "Upload a Photo";
     }
 }
