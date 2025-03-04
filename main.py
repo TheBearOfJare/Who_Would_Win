@@ -156,7 +156,7 @@ def champion_submit():
             print(bcolors.OKBLUE + "New champion: " + name + bcolors.ENDC)
 
             # run image fixer in the background
-            asyncio.run(image_fixer())
+            asyncio.create_task(image_fixer())
 
             # send the user to the voting page
             return redirect(url_for('champion_vote'))
