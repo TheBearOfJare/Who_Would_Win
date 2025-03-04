@@ -12,6 +12,8 @@ import google.genai.types as types
 import html
 import asyncio
 from image_fixer import image_fixer
+import threading
+
 
 with open('var.txt', 'r') as f:
     key = f.read()
@@ -39,6 +41,11 @@ warnings.filterwarnings("ignore")
 app = Flask(__name__, template_folder='.')
 
 # various utility functions
+
+def run_image_fixer():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(image_fixer())
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
     return '.' in filename and \
@@ -156,7 +163,7 @@ def champion_submit():
             print(bcolors.OKBLUE + "New champion: " + name + bcolors.ENDC)
 
             # run image fixer in the background
-            asyncio.create_task(image_fixer())
+            run_image_fixer()
 
             # send the user to the voting page
             return redirect(url_for('champion_vote'))
@@ -270,7 +277,7 @@ def get_image():
                     break
                 except:
                     pass
-                
+
         return imagebase64data
         # return the image data for the requested image
 
