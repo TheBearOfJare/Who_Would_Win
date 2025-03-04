@@ -32,7 +32,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 def calculate_elo(elo1, elo2, winner):
 
     # this is the odds that champion 1 wins
-    expected = 1 / (10**((elo2 - elo1) / 400) + 1)
+    expected = 1 / (10**((elo2 - elo1) / 300) + 1)
 
     k_factor = 32 #* (1000 / max(elo1, elo2))
     
@@ -187,11 +187,11 @@ def champion_vote():
         
         db.at[winner_index, 'elo'] = winner_elo
         db.at[winner_index, 'wins'] += 1
-        db.at[winner_index, 'kd'] = (db.at[winner_index, 'wins'] / db.at[winner_index, 'losses'])
+        db.at[winner_index, 'kd'] = round(db.at[winner_index, 'wins'] / db.at[winner_index, 'losses'], 2)
         
         db.at[loser_index, 'elo'] = loser_elo
         db.at[loser_index, 'losses'] += 1
-        db.at[loser_index, 'kd'] = (db.at[loser_index, 'wins'] / db.at[loser_index, 'losses'])
+        db.at[loser_index, 'kd'] = round(db.at[loser_index, 'wins'] / db.at[loser_index, 'losses'], 2)
         
         # Save the changes to the CSV file
         db.to_csv('data/champion_data.csv', index=False)
