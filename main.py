@@ -11,7 +11,7 @@ import google.genai as genai
 import google.genai.types as types
 import html
 import asyncio
-import image_fixer
+from image_fixer import image_fixer
 
 with open('var.txt', 'r') as f:
     key = f.read()
