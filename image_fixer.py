@@ -2,6 +2,7 @@ from PIL import Image, ImageOps
 import glob, os
 import pandas
 import piexif
+import asyncio
 
 
 # colors to help errors stand out
@@ -18,13 +19,14 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-def get_orientation(image_path):
+
+async def get_orientation(image_path):
     exif_dict = piexif.load(image_path)
     orientation = exif_dict["0th"][piexif.ImageIFD.Orientation]
     return orientation
 
 
-def image_fixer(extensions=['png', 'jpg', 'jpeg']):
+async def image_fixer(extensions=['png', 'jpg', 'jpeg']):
 
     # get the database
 
@@ -75,6 +77,5 @@ def image_fixer(extensions=['png', 'jpg', 'jpeg']):
     print(bcolors.OKGREEN + "Done!" + bcolors.ENDC)
 
 
-image_fixer(['png', 'jpg', 'jpeg'])
-
-# manual rotate images
+# run the image fixer with asyncio
+asyncio.run(image_fixer())

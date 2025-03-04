@@ -10,10 +10,25 @@ from markupsafe import Markup
 import google.genai as genai
 import google.genai.types as types
 import html
-
+import asyncio
+import image_fixer
 
 with open('var.txt', 'r') as f:
     key = f.read()
+
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 
 client = genai.Client(api_key=key)
 
@@ -138,7 +153,10 @@ def champion_submit():
             # save the new data
             db.to_csv('data/champion_data.csv', index=False)
 
-            print("New champion: " + name)
+            print(bcolors.OKBLUE + "New champion: " + name)
+
+            # run image fixer in the background
+            asyncio.run(image_fixer())
 
             # send the user to the voting page
             return redirect(url_for('champion_vote'))
@@ -163,7 +181,7 @@ def champion_vote():
 
     if request.method == 'POST':
 
-        print("Voted for " + request.form['winner'] + " over " + request.form['loser'])
+        print(bcolors.OKGREEN + "Voted for " + request.form['winner'] + " over " + request.form['loser'])
 
         # get the database
         try:
