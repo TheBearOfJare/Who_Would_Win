@@ -153,7 +153,7 @@ def champion_submit():
             # save the new data
             db.to_csv('data/champion_data.csv', index=False)
 
-            print(bcolors.OKBLUE + "New champion: " + name)
+            print(bcolors.OKBLUE + "New champion: " + name + bcolors.ENDC)
 
             # run image fixer in the background
             asyncio.run(image_fixer())
@@ -181,7 +181,7 @@ def champion_vote():
 
     if request.method == 'POST':
 
-        print(bcolors.OKGREEN + "Voted for " + request.form['winner'] + " over " + request.form['loser'])
+        print(bcolors.OKGREEN + "Voted for " + request.form['winner'] + " over " + request.form['loser'] + bcolors.ENDC)
 
         # get the database
         try:
