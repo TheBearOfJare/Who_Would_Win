@@ -228,11 +228,19 @@ def champion_vote():
     while champion_1_data['name'] == champion_2_data['name']:
         champion_2_data = db.sample(n=1).iloc[0].to_dict()
 
+    
     # replace the image src with base64 img data
     for champion in [champion_1_data, champion_2_data]:
-        with open(champion['image'], 'rb') as f:
-            imagebase64data = base64.b64encode(f.read()).decode('utf-8')
-            champion['image'] = 'data:image/png;base64,' + imagebase64data
+
+        # in the unlikely event of the image being temporarily unavailible, this should avoid throwing a file not found error by looping until the image is found
+        while True:
+            try:
+                with open(champion['image'], 'rb') as f:
+                    imagebase64data = base64.b64encode(f.read()).decode('utf-8')
+                    champion['image'] = 'data:image/png;base64,' + imagebase64data
+                break
+            except:
+                pass
 
 
     # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": imagebase64data}
@@ -254,8 +262,15 @@ def get_image():
         # print(src)
 
         with open(src, 'rb') as f:
-            imagebase64data = base64.b64encode(f.read()).decode('utf-8')
 
+            # in the unlikely event of the image being temporarily unavailible, this should avoid throwing a file not found error by looping until the image is found
+            while True:
+                try:
+                    imagebase64data = base64.b64encode(f.read()).decode('utf-8')
+                    break
+                except:
+                    pass
+                
         return imagebase64data
         # return the image data for the requested image
 
