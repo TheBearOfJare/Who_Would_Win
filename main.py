@@ -12,6 +12,7 @@ import google.genai.types as types
 import html
 import asyncio
 from image_fixer import image_fixer
+from dupe_remover import remove_duplicates
 import threading
 
 
@@ -164,7 +165,7 @@ def champion_submit():
 
             # run image fixer in the background
             run_image_fixer()
-
+            remove_duplicates()
             # send the user to the voting page
             return redirect(url_for('champion_vote'))
         
@@ -183,6 +184,7 @@ def champion_submission_invalid():
 @app.route('/champion_vote.html/', methods=['GET', 'POST'])
 def champion_vote():
 
+    remove_duplicates()
 
     # handle the votes
 
@@ -284,6 +286,7 @@ def get_image():
 @app.route('/champion_leaderboard.html')
 def champion_leaderboard():
 
+    remove_duplicates()
 
     # get every champion
     db = pandas.read_csv('data/champion_data.csv')
