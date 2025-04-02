@@ -5,10 +5,10 @@ import pandas
 import os
 import base64
 import warnings
-from waitress import *
+# from waitress import *
 from markupsafe import Markup
-import google.genai as genai
-import google.genai.types as types
+# import google.genai as genai
+# import google.genai.types as types
 import html
 import asyncio
 from image_fixer import image_fixer
@@ -16,8 +16,8 @@ from dupe_remover import remove_duplicates
 import threading
 
 
-with open('var.txt', 'r') as f:
-    key = f.read()
+# with open('var.txt', 'r') as f:
+#     key = f.read()
 
 
 class bcolors:
@@ -33,7 +33,7 @@ class bcolors:
 
 
 
-client = genai.Client(api_key=key)
+# client = genai.Client(api_key=key)
 
 
 warnings.filterwarnings("ignore")
