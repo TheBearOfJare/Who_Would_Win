@@ -1,0 +1,15 @@
+{
+    "name": "External Terminal/Console",
+    "type": "python",
+    "request": "launch",
+    "stopOnEntry": true,
+    "pythonPath": "${config.python.pythonPath}",
+    "program": "${file}",
+    "cwd": "null",
+    "console": "externalTerminal",
+    "debugOptions": [
+        "WaitOnAbnormalExit",
+        "WaitOnNormalExit",
+        "Sudo"
+    ]
+}
