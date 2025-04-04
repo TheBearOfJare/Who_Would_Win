@@ -210,7 +210,7 @@ def champion_vote():
                     imagebase64data = base64.b64encode(f.read()).decode('utf-8')
                     champion['image'] = 'data:image/png;base64,' + imagebase64data
             except Exception as e:
-                print(bcolors.FAIL + "Image not found or exception thrown with " + champion['image'] + ": " + e + bcolors.ENDC)
+                print(bcolors.FAIL + "Image not found or some other exception thrown with " + champion['image'] + ": " + str(e) + bcolors.ENDC)
                 
                 return redirect(url_for('champion_vote'))
 
