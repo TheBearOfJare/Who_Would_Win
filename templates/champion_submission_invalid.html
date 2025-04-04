@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Invalid Submission</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/champion_submit.css') }}">
+    </head>
+
+
+    <body>
+
+        <h1>Invalid Submission</h1>
+        <p>Your champion has either already been added to the database, or an extremely similiar champion is already in the database. If you beleive this is a mistake, try to resubmit your champion, and or check to make sure your champion's name isn't super generic.</p>
+
+        <a href="{{ url_for('champion_submit') }}">Return to submission form</a> | 
+        <a href="{{ url_for('about') }}">Return to home page</a>
+
+    </body>
+</html>

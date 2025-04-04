@@ -144,7 +144,7 @@ def champion_submit():
                 """
 
             # save the champion image
-            sanitized_file_name = secure_filename(file.filename)
+            sanitized_file_name = secure_filename(file.filename).replace("&#x27;", "'")
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], sanitized_file_name))
 
            
@@ -184,78 +184,87 @@ def champion_submission_invalid():
 @app.route('/champion_vote.html/', methods=['GET', 'POST'])
 def champion_vote():
 
-    remove_duplicates()
-
-    # handle the votes
+    #remove_duplicates()
 
     if request.method == 'POST':
+        return handle_vote()
+    else:
+            
 
-        print(bcolors.OKGREEN + "Voted for " + request.form['winner'] + " over " + request.form['loser'] + bcolors.ENDC)
+        # get two random champions from the csv database using pandas
 
-        # get the database
-        try:
-            db = pandas.read_csv('data/champion_data.csv')
-        except:
-            db = pandas.DataFrame(columns=["name", "date_added", "elo", "wins", "losses", "kd", "image"])
-
-        # Update the stats of the champions
-        winner = db.loc[db['name'] == request.form['winner']]
-        loser = db.loc[db['name'] == request.form['loser']]
-        
-        # Update the elo
-        winner_elo = winner.iloc[0]['elo']
-        loser_elo = loser.iloc[0]['elo']
-        
-        winner_elo, loser_elo = calculate_elo(winner_elo, loser_elo, 1)
-        
-        # Update the winner and loser DataFrames
-        winner_index = winner.index[0]
-        loser_index = loser.index[0]
-        
-        db.at[winner_index, 'elo'] = winner_elo
-        db.at[winner_index, 'wins'] += 1
-        db.at[winner_index, 'kd'] = round(db.at[winner_index, 'wins'] / db.at[winner_index, 'losses'], 2)
-        
-        db.at[loser_index, 'elo'] = loser_elo
-        db.at[loser_index, 'losses'] += 1
-        db.at[loser_index, 'kd'] = round(db.at[loser_index, 'wins'] / db.at[loser_index, 'losses'], 2)
-        
-        # Save the changes to the CSV file
-        db.to_csv('data/champion_data.csv', index=False)
-
-        # refresh the page to allow the user to vote on a new matchup
-        return redirect(url_for('champion_vote'))
-        
-
-    # get two random champions from the csv database using pandas
-
-    db = pandas.read_csv('data/champion_data.csv')
-    champion_1_data = db.sample(n=1).iloc[0].to_dict()
-    champion_2_data = db.sample(n=1).iloc[0].to_dict()
-
-    # make sure the two champions are different
-    while champion_1_data['name'] == champion_2_data['name']:
+        db = pandas.read_csv('data/champion_data.csv')
+        champion_1_data = db.sample(n=1).iloc[0].to_dict()
         champion_2_data = db.sample(n=1).iloc[0].to_dict()
 
-    
-    # replace the image src with base64 img data
-    for champion in [champion_1_data, champion_2_data]:
+        # make sure the two champions are different
+        while champion_1_data['name'] == champion_2_data['name']:
+            champion_2_data = db.sample(n=1).iloc[0].to_dict()
 
-        # in the unlikely event of the image being temporarily unavailible, this should avoid throwing a file not found error by looping until the image is found
-        while True:
+        
+        # replace the image src with base64 img data
+        for champion in [champion_1_data, champion_2_data]:
+            
             try:
                 with open(champion['image'], 'rb') as f:
                     imagebase64data = base64.b64encode(f.read()).decode('utf-8')
                     champion['image'] = 'data:image/png;base64,' + imagebase64data
-                break
-            except:
-                pass
+            except Exception as e:
+                print(bcolors.FAIL + "Image not found or exception thrown with " + champion['image'] + ": " + e + bcolors.ENDC)
+                
+                return redirect(url_for('champion_vote'))
 
 
-    # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": imagebase64data}
+        # champion_data will look something like {"name": name, "date_added": date_added, "elo": elo, "kd": kd, "image": imagebase64data}
 
-    return render_template('static/html/champion_vote.html', champion_1_data=champion_1_data, champion_2_data=champion_2_data)
+        return render_template('static/html/champion_vote.html', champion_1_data=champion_1_data, champion_2_data=champion_2_data)
 
+def handle_vote():
+
+    # handle the votes
+
+    print(bcolors.OKGREEN + "Voted for " + request.form['winner'] + " over " + request.form['loser'] + bcolors.ENDC)
+
+    # get the database
+    try:
+        db = pandas.read_csv('data/champion_data.csv')
+    except:
+        db = pandas.DataFrame(columns=["name", "date_added", "elo", "wins", "losses", "kd", "image"])
+
+    # Update the stats of the champions
+    winner = db.loc[db['name'] == request.form['winner']]
+    loser = db.loc[db['name'] == request.form['loser']]
+    
+    # Update the elo
+    winner_elo = winner.iloc[0]['elo']
+    loser_elo = loser.iloc[0]['elo']
+    
+    winner_elo, loser_elo = calculate_elo(winner_elo, loser_elo, 1)
+
+    print(bcolors.OKCYAN + "New Elo: " + str(winner_elo) + " vs " + str(loser_elo) + bcolors.ENDC)
+    
+    # Update the winner and loser DataFrames
+    winner_index = winner.index[0]
+    loser_index = loser.index[0]
+    
+    db.at[winner_index, 'elo'] = winner_elo
+    db.at[winner_index, 'wins'] += 1
+    db.at[winner_index, 'kd'] = round(db.at[winner_index, 'wins'] / db.at[winner_index, 'losses'], 2)
+    
+    db.at[loser_index, 'elo'] = loser_elo
+    db.at[loser_index, 'losses'] += 1
+    db.at[loser_index, 'kd'] = round(db.at[loser_index, 'wins'] / db.at[loser_index, 'losses'], 2)
+    
+
+
+    # Save the changes to the CSV file
+    db.to_csv('data/champion_data.csv', index=False)
+
+    print(bcolors.OKCYAN + "Data saved" + bcolors.ENDC)
+
+    
+    # refresh the page to allow the user to vote on a new matchup
+    return redirect(url_for('champion_vote'), code=302)
 
 
 # the image getter
@@ -312,6 +321,6 @@ def champion_leaderboard():
 if __name__ == '__main__':
     app.run(debug=True)
 
-    #serve(app, host='0.0.0.0', port=5000)
+    #serve(app, host='0.0.0.0', port=80)
 
     
