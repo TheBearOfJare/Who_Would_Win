@@ -14,6 +14,7 @@
     left: 43%;
     font-size: 10vw;
     margin: 0px;
+    font-family: "bungeeshade";
 }
 
 .champion_1 {
@@ -23,7 +24,10 @@
     display: block;
     left: 0px;
     top: 0px;
-    width: 40%;;
+    width: 40%;
+    font-size: 4svh;
+    font-family: "geo_italic";
+
 
 }
 
@@ -35,7 +39,13 @@
     top: 0px;
     right: 0px;
     width: 40%; 
+    font-size: 4svh;
+    font-family: "geo_italic";
 
+}
+
+p {
+    margin: 0px;
 }
 
 .champion_img {
@@ -48,6 +58,7 @@
 .champion_name {
     font-size: 5svh;
     margin: 0.5svh;
+    font-family: "metal_maniaregular";
 }
 .menu {
     position: fixed;
@@ -58,4 +69,52 @@
     align-self: center;
     display: block;
     margin: 0px;
+    font-size: 30px;
+    font-family: "monofettregular";
+}
+
+@font-face {
+    font-family: 'monofettregular';
+    src: url('/static/fonts/monofett/monofett-regular-webfont.woff2') format('woff2'),
+         url('/static/fonts/monofett/monofett-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'metal_maniaregular';
+    src: url('/static/fonts/metalmania/metalmania-regular-webfont.woff2') format('woff2'),
+         url('/static/fonts/metalmania/metalmania-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'bungeeshade';
+    src: url('/static/fonts/bungieshade/bungeeshade-regular-webfont.woff2') format('woff2'),
+         url('/static/fonts/bungieshade/bungeeshade-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'kumar';
+    src: url('/static/fonts/kumar/kumaroneoutline-regular-webfont.woff2') format('woff2'),
+         url('/static/fonts/kumar/kumaroneoutline-regular-webfont.woff') format('woff');
+    font-weight: normal;    
+    font-style: normal;
+}
+@font-face {
+    font-family: 'geo_italic';
+    src: url('/static/fonts/geo/geo-italic-webfont.woff2') format('woff2'),
+         url('/static/fonts/geo/geo-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'geo_regular';
+    src: url('/static/fonts/geo/geo-regular-webfont.woff2') format('woff2'),
+         url('/static/fonts/geo/geo-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
